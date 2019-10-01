@@ -656,7 +656,21 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 	{
 		for (int i = 0; i < 32; i++)
 		{
-			SetBufferPixel(destx + i, desty + j, GetPixel(sourcex + i, sourcey + j));
+			int xSource = sourcex + i, ySource = sourcey + j, xDest, yDest;
+			switch (rot)
+			{
+			case 0:
+			{
+				xDest = destx + i;
+				yDest = desty + j;
+				break;
+			}
+			default:
+				xDest = destx + i;
+				yDest = desty + j;
+				break;
+			}
+			SetBufferPixel(xDest, yDest, GetPixel(xSource, ySource));
 		}
 	}
 
