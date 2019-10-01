@@ -656,21 +656,68 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 	{
 		for (int i = 0; i < 32; i++)
 		{
-			int xSource = sourcex + i, ySource = sourcey + j, xDest, yDest;
+			int xOffset, yOffset;
 			switch (rot)
 			{
-			case 0:
-			{
-				xDest = destx + i;
-				yDest = desty + j;
-				break;
+				// Normal
+				case 0:
+				{
+					xOffset = i;
+					yOffset = j;
+					break;
+				}
+				// Flip in X
+				case 1:
+				{
+					xOffset = 31 - i;
+					yOffset = j;
+					break;
+				}
+				// Rotate 90 deg
+				case 2:
+				{
+					xOffset = j;
+					yOffset = 31 - i;
+					break;
+				}
+				// Flip in x AND rotate 90 deg
+				case 3:
+				{
+					xOffset = 31 - j;
+					yOffset = 31 - i;
+					break;
+				}
+				// Rotate 180 deg
+				case 4:
+				{
+					xOffset = 31 - i;
+					yOffset = 31 - j;
+					break;
+				}
+				// Flip in Y
+				case 5:
+				{
+					xOffset = i;
+					yOffset = 31 - j;
+					break;
+				}
+				// Rotate 270 deg
+				case 6:
+				{
+					xOffset = 31 - j;
+					yOffset = i;
+					break;
+				}
+				// Rotate 270 deg and flip in X
+				default:
+				{
+					xOffset = j;
+					yOffset = i;
+					break;
+				}
 			}
-			default:
-				xDest = destx + i;
-				yDest = desty + j;
-				break;
-			}
-			SetBufferPixel(xDest, yDest, GetPixel(xSource, ySource));
+			Color pColor = GetPixel(sourcex + xOffset, sourcey + yOffset);
+			SetBufferPixel(destx + i, desty + j, pColor);
 		}
 	}
 
@@ -698,6 +745,7 @@ int DrawSegments2Buffer(SEGMENT* pSegments)
 
 			int mapX = ((segIndex % 16) * 4) + (polyIndex % 4);
 			int mapY = (floor(segIndex / 16) * 4) + floor(polyIndex / 4);
+
 
 			CopyTIM2Buffer(_TIMXPOS(poly.cTileRef), _TIMYPOS(poly.cTileRef), (mapX * 32), (mapY * 32), poly.cRot);
 		}
