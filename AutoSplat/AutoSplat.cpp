@@ -713,6 +713,7 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 				{
 					xOffset = j;
 					yOffset = i;
+					break;
 				}
 				default:
 				{
