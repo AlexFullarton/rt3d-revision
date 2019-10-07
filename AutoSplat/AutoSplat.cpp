@@ -709,10 +709,15 @@ int CopyTIM2Buffer(int sourcex, int sourcey, int destx, int desty, int rot)
 					break;
 				}
 				// Rotate 270 deg and flip in X
-				default:
+				case 7:
 				{
 					xOffset = j;
 					yOffset = i;
+				}
+				default:
+				{
+					xOffset = i;
+					yOffset = j;
 					break;
 				}
 			}
